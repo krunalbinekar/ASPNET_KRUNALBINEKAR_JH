@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +10,11 @@ namespace Employee1
     {
         static void Main(string[] args)
         {
-            GeneralManager o = new GeneralManager("krunal",20000,20,"COMPUTER","20");
-            GeneralManager o1 = new GeneralManager("krunal", 20000, 20, "COMPUTER","20");
-            GeneralManager o2 = new GeneralManager("krunal", 20000, 20, "COMPUTER", "20");
+        
+            GeneralManager o = new GeneralManager("krunal",20000,20,"COMPUTER","20",20000);
+            GeneralManager o1 = new GeneralManager("krunal", 20000, 20, "COMPUTER", "20", 20000);
+            GeneralManager o2 = new GeneralManager("krunal", 20000, 20, "COMPUTER", "20", 20000);
+
             Console.ReadLine();
 
 
@@ -76,19 +78,21 @@ namespace Employee1
 
         public abstract decimal BASIC { set; get; }
 
-        public abstract decimal CalcNetSalary(int basee);
+        public abstract decimal CalcNetSalary();
     }
 
     public class Manager : Employee{
-        public Manager (string NAME, decimal BASIC, short DEPTNO,string DESGIGNATION) : base(NAME,BASIC,DEPTNO)
+        public Manager (string NAME, decimal BASIC, short DEPTNO,string DESGIGNATION,decimal NET) : base(NAME,BASIC,DEPTNO)
         {
             //EmpNo++;
             //this.NAME = NAME;
             //this.BASIC = BASIC;
             //this.DEPTNO = DEPTNO;
             this.DESIGNATION = DESGIGNATION;
+            decimal Net = CalcNetSalary();
+            NET = Net;
 
-            Console.WriteLine("{0} {1} {2} {3} {4}",EmpNo,NAME,BASIC,DEPTNO,DESGIGNATION);
+            Console.WriteLine("{0} {1} {2} {3} {4} {5}",EmpNo,NAME,BASIC,DEPTNO,DESGIGNATION,NET);
         }
 
 
@@ -133,11 +137,12 @@ namespace Employee1
 
         }
 
-        public override decimal CalcNetSalary(int basee)
+        public override decimal CalcNetSalary()
         {
-            int netSalary;
-            int da;
-            int ta;
+            decimal basee = BASIC;
+            decimal netSalary;
+            decimal da;
+            decimal ta;
 
             da = (10 * basee) / 100;
 
@@ -149,7 +154,7 @@ namespace Employee1
 
     }
     public class GeneralManager : Manager {
-        public GeneralManager(string NAME, decimal BASIC, short DEPTNO, string DESGIGNATION,string PERKS) : base(NAME,BASIC,DEPTNO,DESGIGNATION)
+        public GeneralManager(string NAME, decimal BASIC, short DEPTNO, string DESGIGNATION,string PERKS,decimal NET) : base(NAME,BASIC,DEPTNO,DESGIGNATION,NET)
         {
             EmpNo++;
             //this.NAME = NAME;
@@ -157,6 +162,8 @@ namespace Employee1
             //this.DEPTNO = DEPTNO;
             //this.DESIGNATION = DESGIGNATION;
             this.PERKS = PERKS;
+            //decimal Net = CalcNetSalary();
+            //NET = Net;
         }
         private string perks;
 
@@ -171,8 +178,22 @@ namespace Employee1
             }
         
         }
-    
-    
+        public override decimal CalcNetSalary()
+        {
+            decimal basee = BASIC;
+            decimal netSalary;
+            decimal da;
+            decimal ta;
+
+            da = (10 * basee) / 100;
+
+            ta = (12 * basee) / 100;
+            netSalary = basee + da + ta;
+
+            return netSalary;
+        }
+
+
     }
 
     public class CEO : Employee
@@ -187,7 +208,7 @@ namespace Employee1
         }
         public sealed override decimal BASIC { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public sealed override decimal CalcNetSalary(int basee)
+        public sealed override decimal CalcNetSalary()
         {
             throw new NotImplementedException();
         }
